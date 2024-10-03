@@ -1,6 +1,6 @@
 package com.example.keyboardshops.service.product;
 
-import com.example.keyboardshops.exceptions.ProductNotFoundException;
+import com.example.keyboardshops.exceptions.ResourceNotFoundException;
 import com.example.keyboardshops.model.Category;
 import com.example.keyboardshops.model.Product;
 import com.example.keyboardshops.repository.CategoryRepository;
@@ -45,19 +45,19 @@ public class ProductService implements IProductService {
 
     @Override
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("Product not found!"));
+        return productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Product not found!"));
     }
 
     @Override
     public void deleteProductById(Long id) {
-        productRepository.findById(id).ifPresentOrElse(productRepository::delete, ()->{throw new ProductNotFoundException("Product not found!");});
+        productRepository.findById(id).ifPresentOrElse(productRepository::delete, ()->{throw new ResourceNotFoundException("Product not found!");});
     }
 
     @Override
     public Product updateProduct(ProductUpdateRequest request, Long productId) {
         return productRepository.findById(productId).map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository :: save)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
@@ -92,8 +92,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getProductsByNameAndBrand(String name, String brand) {
-        return productRepository.findByNameAndBrand(name, brand);
+    public List<Product> getProductsByBrandAndName(String brand, String name) {
+        return productRepository.findByBrandAndName(brand, name);
     }
 
     @Override
