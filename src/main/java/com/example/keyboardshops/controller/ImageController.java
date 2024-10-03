@@ -3,7 +3,7 @@ package com.example.keyboardshops.controller;
 import com.example.keyboardshops.dto.ImageDto;
 import com.example.keyboardshops.exceptions.ResourceNotFoundException;
 import com.example.keyboardshops.model.Image;
-import com.example.keyboardshops.reponse.ApiResponse;
+import com.example.keyboardshops.response.ApiResponse;
 import com.example.keyboardshops.service.image.IImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;

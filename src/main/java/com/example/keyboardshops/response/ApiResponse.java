@@ -1,4 +1,4 @@
-package com.example.keyboardshops.reponse;
+package com.example.keyboardshops.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
