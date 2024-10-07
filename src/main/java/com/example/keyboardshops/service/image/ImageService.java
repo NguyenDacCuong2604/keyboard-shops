@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.keyboardshops.utils.FileUtils.randomNameFile;
+
 @Service
 @RequiredArgsConstructor
 public class ImageService implements IImageService {
@@ -41,18 +43,12 @@ public class ImageService implements IImageService {
         for (MultipartFile file : files) {
             try {
                 Image image = new Image();
-                image.setFileName(file.getOriginalFilename());
+                image.setFileName(randomNameFile(file.getOriginalFilename()));
                 image.setFileType(file.getContentType());
                 image.setImage(new SerialBlob(file.getBytes()));
                 image.setProduct(product);
 
-                String buildDownloadUrl = "/api/v1/images/image/download/";
-                String downloadUrl = buildDownloadUrl + image.getId();
-                image.setDownloadUrl(downloadUrl);
                 Image saveImage = imageRepository.save(image);
-
-                saveImage.setDownloadUrl(buildDownloadUrl + saveImage.getId());
-                imageRepository.save(saveImage);
 
                 ImageDto imageDto = new ImageDto();
                 imageDto.setId(saveImage.getId());
@@ -70,7 +66,7 @@ public class ImageService implements IImageService {
     public void updateImage(MultipartFile file, Long imageId) {
         try {
             Image image = getImageById(imageId);
-            image.setFileName(file.getOriginalFilename());
+            image.setFileName(randomNameFile(file.getOriginalFilename()));
             image.setImage(new SerialBlob(file.getBytes()));
             imageRepository.save(image);
         } catch (IOException | SQLException e) {

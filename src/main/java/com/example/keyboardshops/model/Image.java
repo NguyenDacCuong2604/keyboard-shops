@@ -1,5 +1,6 @@
 package com.example.keyboardshops.model;
 
+import com.example.keyboardshops.utils.Constants;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +28,11 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @PostPersist
+    public void setDownloadUrl() {
+        downloadUrl = Constants.buildDownloadUrl+id;
+    }
+
+
 }
