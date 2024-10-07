@@ -1,5 +1,6 @@
 package com.example.keyboardshops.service.product;
 
+import com.example.keyboardshops.dto.ProductDto;
 import com.example.keyboardshops.model.Product;
 import com.example.keyboardshops.request.AddProductRequest;
 import com.example.keyboardshops.request.ProductUpdateRequest;
@@ -19,4 +20,7 @@ public interface IProductService {
     List<Product> getProductsByBrandAndName(String brand, String name);
     Long countProductsByBrandAndName(String brand, String name);
 
+    List<ProductDto> getConvertedProducts(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 }

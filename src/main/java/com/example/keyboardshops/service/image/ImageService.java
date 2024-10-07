@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class ImageService implements IImageService {
                 image.setImage(new SerialBlob(file.getBytes()));
                 image.setProduct(product);
 
-                String buildDownloadUrl = "/api/v1/images/download/";
+                String buildDownloadUrl = "/api/v1/images/image/download/";
                 String downloadUrl = buildDownloadUrl + image.getId();
                 image.setDownloadUrl(downloadUrl);
                 Image saveImage = imageRepository.save(image);
@@ -56,8 +55,8 @@ public class ImageService implements IImageService {
                 imageRepository.save(saveImage);
 
                 ImageDto imageDto = new ImageDto();
-                imageDto.setImageId(saveImage.getId());
-                imageDto.setImageName(saveImage.getFileName());
+                imageDto.setId(saveImage.getId());
+                imageDto.setFileName(saveImage.getFileName());
                 imageDto.setDownloadUrl(saveImage.getDownloadUrl());
                 savedImageDto.add(imageDto);
             } catch (SQLException | IOException e) {
