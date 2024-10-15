@@ -6,6 +6,7 @@ import com.example.keyboardshops.repository.CartItemRepository;
 import com.example.keyboardshops.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicLong;
@@ -25,13 +26,13 @@ public class CartService implements ICartService {
         return cartRepository.save(cart);
     }
 
+    @Transactional
     @Override
     public void clearCart(Long id) {
         Cart cart = getCart(id);
         cartItemRepository.deleteAllByCartId(id);
         cart.getItems().clear();
         cartRepository.deleteById(id);
-
     }
 
     @Override
@@ -46,5 +47,10 @@ public class CartService implements ICartService {
         Long newCartId = cartIdGenerator.incrementAndGet();
         newCart.setId(newCartId);
         return cartRepository.save(newCart).getId();
+    }
+
+    @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
     }
 }
