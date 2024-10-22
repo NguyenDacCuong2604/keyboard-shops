@@ -1,5 +1,6 @@
 package com.example.keyboardshops.service.user;
 
+import com.example.keyboardshops.dto.UserDto;
 import com.example.keyboardshops.exceptions.AlreadyExistsException;
 import com.example.keyboardshops.exceptions.ResourceNotFoundException;
 import com.example.keyboardshops.model.User;
@@ -7,6 +8,7 @@ import com.example.keyboardshops.repository.UserRepository;
 import com.example.keyboardshops.request.CreateUserRequest;
 import com.example.keyboardshops.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public User getUserById(Long id) {
@@ -48,5 +51,10 @@ public class UserService implements IUserService {
         userRepository.findById(userId).ifPresentOrElse(userRepository :: delete, () -> {
             throw new ResourceNotFoundException("User not found");
         });
+    }
+
+    @Override
+    public UserDto convertUserToDto(User user) {
+        return modelMapper.map(user, UserDto.class);
     }
 }
