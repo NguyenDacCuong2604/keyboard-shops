@@ -1,4 +1,4 @@
-package com.example.keyboardshops.config;
+package com.example.keyboardshops.security.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
