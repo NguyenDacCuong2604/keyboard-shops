@@ -2,6 +2,7 @@ package com.example.keyboardshops.service.product;
 
 import com.example.keyboardshops.dto.ImageDto;
 import com.example.keyboardshops.dto.ProductDto;
+import com.example.keyboardshops.exceptions.AlreadyExistsException;
 import com.example.keyboardshops.exceptions.ResourceNotFoundException;
 import com.example.keyboardshops.model.Category;
 import com.example.keyboardshops.model.Image;
@@ -33,6 +34,11 @@ public class ProductService implements IProductService {
         // If yes, set it as the new product category
         // If no, the save it as a new category
         // The set as the new product category
+
+        if(productExists(request.getName(), request.getBrand())) {
+            throw new AlreadyExistsException("Product already exists");
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
@@ -40,6 +46,10 @@ public class ProductService implements IProductService {
                 });
         request.setCategory(category);
         return productRepository.save(createProduct(request, category));
+    }
+
+    private boolean productExists(String name, String brand) {
+        return productRepository.existsByNameAndBrand(name, brand);
     }
 
     private Product createProduct(AddProductRequest request, Category category) {
