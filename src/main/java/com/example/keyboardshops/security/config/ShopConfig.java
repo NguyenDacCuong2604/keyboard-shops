@@ -27,7 +27,7 @@ import java.util.List;
 public class ShopConfig {
     private final ShopUserDetailsService shopUserDetailsService;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
-    private static final List<String> SECURED_URLS = List.of("");
+    private static final List<String> SECURED_URLS = List.of("/api/v1/carts/**", "/api/v1/cartItems/**");
 
     @Bean
     public ModelMapper modelMapper() {
